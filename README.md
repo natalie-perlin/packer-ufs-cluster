@@ -1,5 +1,9 @@
 # packer-srwcluster
 
+
+### AWS UFS configuration with spack-stack v1.6.0:
+packer build ufs-cluster.pkr.hcl -var "date=25July2024"
+
 ### AWS SRW configuration:
 packer build srw-cluster.pkr.hcl -var "date=4May2023"
 
