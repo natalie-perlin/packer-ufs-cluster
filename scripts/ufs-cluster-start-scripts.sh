@@ -127,27 +127,7 @@ prepend_path("PATH","$ROCOTOBIN")
 prepend_path("LD_LIBRARY_PATH","$ROCOTOLIB")
 EOF
 #
-
-#
-# Download and stage the data in /home/ubuntu/data directory:
-sudo -u ubuntu mkdir -p /home/ubuntu/data && cd /home/ubuntu/data
-# Fix files - 
-sudo -u ubuntu wget https://noaa-ufs-srw-pds.s3.amazonaws.com/experiment-user-cases/release-public-v2.1.0/out-of-the-box/fix_data.tgz
-sudo -u ubuntu tar -xf fix_data.tgz && rm fix_data.tgz
-
-# External model data for initial and boundary conditions
-sudo -u ubuntu wget https://noaa-ufs-srw-pds.s3.amazonaws.com/experiment-user-cases/release-public-v2.1.0/out-of-the-box/gst_data.tgz
-sudo -u ubuntu tar -xf gst_data.tgz && rm gst_data.tgz
-
-# Shape files for plotting tasks
-sudo -u ubuntu wget https://noaa-ufs-srw-pds.s3.amazonaws.com/develop-20240618/NaturalEarth/NaturalEarth.tgz
-sudo -u ubuntu tar -xf NaturalEarth.tgz && rm NaturalEarth.tgz 
-
-# Pre-build a singularity container 
+# Pre-build a singularity container with spack-stack v1.6.0
 cd /home/ubuntu
 sudo -u ubuntu singularity build /home/ubuntu/ubuntu22.04-intel-srw-ss-v1.6.0.img docker://noaaepic/ubuntu22.04-intel-srw:ss-v1.6.0
-
-#  
-#  Download the UFS-SRW 
-sudo -u ubuntu git clone -b feature/UIFCW24-dev --single-branch https://github.com/ufs-community/ufs-srweather-app.git 
 #

@@ -39,14 +39,14 @@ variable "aws_ssh_username" {
   default     = "ubuntu"
 }
 
-variable "aws_source_ami_filter_ubuntu_2004_hvm" {
-  description = "Object with source AMI filters for Ubuntu 20.04"
+variable "aws_source_ami_filter_ubuntu_2204_hvm" {
+  description = "Object with source AMI filters for Ubuntu 22.04"
   type = object({
     name   = string
     owners = list(string)
   })
   default = {
-    name = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
+    name = "ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"
     owners = [
       "099720109477"
     ]
@@ -88,7 +88,7 @@ variable "root_volume_size" {
 ###
 
 source "amazon-ebs" "base" {
-  ami_name                    = "srw-cluster-{{date}}.x86_64-gp3"
+  ami_name                    = "ufs-cluster-{{date}}.x86_64-gp3"
   ami_regions                 = var.aws_ami_regions
   ami_users                   = var.aws_ami_users
   ami_groups                  = var.aws_ami_groups
@@ -125,21 +125,21 @@ source "amazon-ebs" "base" {
 build {
   source "amazon-ebs.base" {
     ami_description = "SRW Cluster"
-    name            = "SRW-Cluster-Ubuntu-20.04-hvm"
+    name            = "SRW-Cluster-Ubuntu-22.04-hvm"
     source_ami_filter {
       filters = {
         virtualization-type = "hvm"
-        name                = var.aws_source_ami_filter_ubuntu_2004_hvm.name
+        name                = var.aws_source_ami_filter_ubuntu_2204_hvm.name
         root-device-type    = "ebs"
       }
-      owners      = var.aws_source_ami_filter_ubuntu_2004_hvm.owners
+      owners      = var.aws_source_ami_filter_ubuntu_2204_hvm.owners
       most_recent = true
     }
   }
 
   provisioner "shell" {
     execute_command = "{{ .Vars }} sudo -E '{{ .Path }}'"
-    script          = "${path.root}/scripts/srw-cluster-start-script.sh"
+    script          = "${path.root}/scripts/ufs-cluster-start-script.sh"
   }
 }
 ###
